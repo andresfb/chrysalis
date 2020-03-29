@@ -6,6 +6,7 @@ src/storage/*.key
 src/vendor
 src/public/fonts/vendor/
 src/public/vendor/
+src/public/css/adminlte.css
 .env
 .phpunit.result.cache
 Homestead.json

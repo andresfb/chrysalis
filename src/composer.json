@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3",
+        "almasaeed2010/adminlte": "~3.0",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",
         "guzzlehttp/guzzle": "^6.3",
@@ -62,6 +63,18 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "post-install-cmd": [
+            "rm -rf public/vendor",
+            "mkdir -p public/vendor",
+            "ln -s ../../vendor/almasaeed2010/adminlte/dist public/vendor/adminlte",
+            "ln -s ../../vendor/almasaeed2010/adminlte/plugins public/vendor/plugins"
+        ],
+        "post-update-cmd": [
+            "rm -rf public/vendor",
+            "mkdir -p public/vendor",
+            "ln -s ../../vendor/almasaeed2010/adminlte/dist public/vendor/adminlte",
+            "ln -s ../../vendor/almasaeed2010/adminlte/plugins public/vendor/plugins"
         ]
     }
 }
