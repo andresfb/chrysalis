@@ -1,0 +1,64 @@
+Project Bug_tracker_system {
+  database_type: 'MySQL'
+}
+
+Table projects {
+    id int [pk, increment]
+    code varchar(5) [not null]
+    name varchar(150) [not null]
+    status projects_status
+    owner_id int [ref: > users.id]
+    category_id int [ref: > categories.id]
+    start_date datetime [not null]
+    end_date datetime [not null]
+    description text
+    created_at timestamp
+    updated_at timestamp
+}
+
+Enum projects_status {
+  active
+  in_progress
+  on_track
+  delayed
+  testing
+  on_hold
+  approved
+  cancelled
+  planning
+  completed
+}
+
+Table users {
+  id int [pk, increment]
+  name varchar(255) [not null]
+  email varchar(255) [not null]
+  email_verified_at timestamp
+  password varchar(255) [not null]
+  remember_token varchar(100)
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table categories {
+  id int [pk, increment]
+  name varchar(150) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table tags {
+  id int [pk, increment]
+  name varchar(50) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table project_tag {
+  project_id int [ref: > projects.id]
+  tag_id int [ref: > tags.id]
+
+  indexes {
+    (project_id, tag_id) [pk]
+  }
+}
