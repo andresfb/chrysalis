@@ -69,12 +69,6 @@
             "mkdir -p public/vendor",
             "ln -s ../../vendor/almasaeed2010/adminlte/dist public/vendor/adminlte",
             "ln -s ../../vendor/almasaeed2010/adminlte/plugins public/vendor/plugins"
-        ],
-        "post-update-cmd": [
-            "rm -rf public/vendor",
-            "mkdir -p public/vendor",
-            "ln -s ../../vendor/almasaeed2010/adminlte/dist public/vendor/adminlte",
-            "ln -s ../../vendor/almasaeed2010/adminlte/plugins public/vendor/plugins"
         ]
     }
 }
