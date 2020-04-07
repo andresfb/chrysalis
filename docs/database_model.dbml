@@ -3,30 +3,15 @@ Project Bug_tracker_system {
 }
 
 Table projects {
-    id int [pk, increment]
-    owner_id int [ref: > users.id]
-    category_id int [ref: > categories.id]
-    code varchar(5) [not null]
-    name varchar(150) [not null]
-    status projects_status
-    start_date datetime [not null]
-    end_date datetime [not null]
-    description text
-    created_at timestamp
-    updated_at timestamp
-}
-
-Enum projects_status {
-  active
-  in_progress
-  on_track
-  delayed
-  testing
-  on_hold
-  approved
-  cancelled
-  planning
-  completed
+  id int [pk, increment]
+  owner_id int [ref: - users.id]
+  category_id int [ref: - categories.id]
+  status_id int [ref: - projects_status.id]
+  code varchar(5) [not null]
+  title varchar(150) [not null]
+  description text
+  created_at timestamp
+  updated_at timestamp
 }
 
 Table users {
@@ -45,6 +30,11 @@ Table categories {
   name varchar(150) [not null]
   created_at timestamp
   updated_at timestamp
+}
+
+Table projects_status {
+  id int [pk, increment]
+  name varcha(20) [not null]
 }
 
 Table tags {
