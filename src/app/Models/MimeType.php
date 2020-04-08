@@ -6,22 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class ProjectStatus
+ * Class MimeType
  *
  * @package App\Models
  */
-class ProjectStatus extends Model
+class MimeType extends Model
 {
     /** @var array */
     protected $guarded = [];
 
+    /** @var array */
+    public $timestamps = [];
+
     /**
-     * projects Method.
+     * attachments Method.
      *
      * @return HasMany
      */
-    public function projects()
+    public function attachments()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Attachment::class);
     }
 }

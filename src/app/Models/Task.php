@@ -4,37 +4,36 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * Class Project
+ * Class Task
  *
  * @package App\Models
  */
-class Project extends Model
+class Task extends Model
 {
     /** @var array */
     protected $guarded = [];
 
     /**
-     * owner Method.
+     * assignee Method.
      *
      * @return BelongsTo
      */
-    public function owner()
+    public function assignee()
     {
-        return $this->belongsTo(User::class, 'id', 'owner_id');
+        return $this->belongsTo(User::class, 'id', 'assignee_id');
     }
 
     /**
-     * category Method.
+     * issue Method.
      *
      * @return BelongsTo
      */
-    public function category()
+    public function issue()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Issue::class);
     }
 
     /**
@@ -44,17 +43,17 @@ class Project extends Model
      */
     public function status()
     {
-        return $this->belongsTo(ProjectStatus::class);
+        return $this->belongsTo(TaskStatus::class);
     }
 
     /**
-     * issues Method.
+     * priority Method.
      *
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function issues()
+    public function priority()
     {
-        return $this->hasMany(Issue::class);
+        return $this->belongsTo(TaskPriority::class);
     }
 
     /**

@@ -6,22 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * Class ProjectStatus
+ * Class IssueType
  *
  * @package App\Models
  */
-class ProjectStatus extends Model
+class IssueType extends Model
 {
     /** @var array */
     protected $guarded = [];
 
+    /** @var bool */
+    public $timestamps = false;
+
     /**
-     * projects Method.
+     * issues Method.
      *
      * @return HasMany
      */
-    public function projects()
+    public function issues()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Issue::class);
     }
 }
