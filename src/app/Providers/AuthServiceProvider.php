@@ -27,10 +27,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::before(function ($user, $permission) {
-
+            
             /** @var User $user */
-            return $user->permissions()->contains($permission);
+            if ($user->isAdmin()) {
+                return true;
+            }
 
+            return $user->permissions()->contains($permission);
         });
     }
 }
