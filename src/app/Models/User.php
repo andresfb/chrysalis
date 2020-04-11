@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,11 +12,13 @@ use Illuminate\Support\Collection;
 /**
  * Class User
  *
- * @package App
+ * @package App\Models
+ *
+ * @property Collection roles
  */
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Cachable;
 
     /** @var array */
     protected $guarded = [];
