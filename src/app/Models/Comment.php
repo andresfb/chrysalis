@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Comment
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Comment extends Model
 {
+    use SoftDeletes;
+
     /** @var array */
     protected $guarded = [];
 

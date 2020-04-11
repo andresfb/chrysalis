@@ -25,6 +25,7 @@ class CreateIssuesTable extends Migration
             $table->text('description')->nullable();
             $table->text('enviroment')->nullable();
             $table->dateTime('due_date')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('assignee_id')

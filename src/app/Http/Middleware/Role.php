@@ -2,10 +2,14 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 
+/**
+ * Class Role
+ *
+ * @package App\Http\Middleware
+ */
 class Role
 {
     /**
@@ -13,12 +17,11 @@ class Role
      *
      * @param Request $request
      * @param Closure $next
-     * @param array $roles
+     * @param array<int,mixed> $roles
      * @return mixed
      */
     public function handle($request, Closure $next, ...$roles)
     {
-        /** @var User $user */
         $user = auth()->user();
 
         if ($user->isAdmin()) {

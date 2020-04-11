@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Project
@@ -14,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class Project extends Model
 {
+    use SoftDeletes;
+
     /** @var array */
     protected $guarded = [];
 

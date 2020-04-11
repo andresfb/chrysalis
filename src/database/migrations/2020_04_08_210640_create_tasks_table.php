@@ -21,6 +21,7 @@ class CreateTasksTable extends Migration
             $table->unsignedBigInteger('priority_id');
             $table->string('title');
             $table->text('description')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('issue_id')

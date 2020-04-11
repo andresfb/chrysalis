@@ -21,6 +21,7 @@ class CreateActivitiesTable extends Migration
             $table->string('activitable_type');
             $table->text('activity');
             $table->text('change')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

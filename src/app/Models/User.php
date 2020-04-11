@@ -5,20 +5,18 @@ namespace App\Models;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 
 /**
  * Class User
- *
  * @package App\Models
- *
- * @property Collection roles
  */
 class User extends Authenticatable
 {
-    use Notifiable, Cachable;
+    use Notifiable, Cachable, SoftDeletes;
 
     /** @var array */
     protected $guarded = [];

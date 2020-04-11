@@ -21,6 +21,7 @@ class CreateProjectsTable extends Migration
             $table->string('code', 5);
             $table->string('title', 150);
             $table->text('description')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('owner_id')
