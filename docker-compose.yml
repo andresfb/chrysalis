@@ -65,16 +65,6 @@ services:
     networks:
       - app-network
 
-  composer:
-    image: composer:latest
-    container_name: composer
-    volumes:
-      - ./src:/var/www
-    working_dir: /var/www
-    user: 1000:1000
-    networks:
-      - app-network
-
   artisan:
     build:
       context: .

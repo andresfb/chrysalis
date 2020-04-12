@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class User
@@ -16,7 +15,7 @@ use Illuminate\Support\Collection;
  */
 class User extends Authenticatable
 {
-    use Notifiable, Cachable, SoftDeletes;
+    use Notifiable, Cachable, SoftDeletes, HasRoles;
 
     /** @var array */
     protected $guarded = [];
@@ -47,56 +46,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * isAdmin Method.
-     *
-     * @return bool
-     */
-    public function isAdmin()
-    {
-        return !empty($this->roles()->where('name', 'admin')->first());
-    }
-
-    /**
-     * roles Method.
-     *
-     * @return BelongsToMany
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
-    /**
-     * assignRole Method.
-     *
-     * @param string|Role $role
-     * @return void
-     */
-    public function assignRole($role)
-    {
-        if (is_string($role)) {
-            $role = Role::whereName($role)->firstOrFail();
-        }
-
-        $this->roles()->sync($role, false);
-    }
-
-    /**
-     * permissions Method.
-     *
-     * @return Collection
-     */
-    public function permissions()
-    {
-        return $this->roles
-            ->map
-            ->permissions()
-            ->flatten()
-            ->pluck('name')
-            ->unique();
-    }
 
     /**
      * activities Method.
