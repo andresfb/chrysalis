@@ -2,10 +2,9 @@
 
 namespace Tests\Unit;
 
-use App\Models\Permission;
-use App\Models\Role;
 use Tests\TestCase;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserTest extends TestCase
@@ -17,18 +16,10 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $permission = Permission::create([
-            'name' => 'full_access',
-        ]);
-
-        $role = Role::create([
-            'name'  => 'admin',
-            'label' => 'Administrator'
-        ]);
-        $role->allowTo($permission);
+        $role = Role::findByName('super-admin');
 
         $user->assignRole($role);
 
-        $this->assertTrue($user->isAdmin());
+        $this->assertTrue($user->hasRole('super-admin'));
     }
 }

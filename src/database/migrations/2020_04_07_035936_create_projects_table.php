@@ -16,7 +16,6 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('owner_id');
-            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('status_id');
             $table->string('code', 5);
             $table->string('title', 150);

@@ -70,7 +70,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        if ($user->can('projects.update')) {
+        if ($user->can('projects.update.own') && $user->is($project->owner)) {
             return true;
         }
 

@@ -58,7 +58,6 @@ services:
     volumes:
       - ./src:/var/www
       - ./config/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-      - ./config/supervisor/horizon.conf:/etc/supervisor/conf.d/horizon.conf
     user: 1000:1000
     ports:
       - "9000:9000"
@@ -73,8 +72,21 @@ services:
     user: 1000:1000
     volumes:
       - ./src:/var/www
+    depends_on:
+      - mysql
     working_dir: /var/www
     entrypoint: ['/var/www/artisan']
+    networks:
+      - app-network
+
+  composer:
+    image: composer:latest
+    container_name: composer
+    volumes:
+      - ./src:/var/www
+    working_dir: /var/www
+    depends_on:
+      - php
     networks:
       - app-network
 
