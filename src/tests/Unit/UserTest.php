@@ -16,10 +16,10 @@ class UserTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $role = Role::findByName('super-admin');
+        $role = Role::findByName('admin');
 
         $user->assignRole($role);
 
-        $this->assertTrue($user->hasRole('super-admin'));
+        $this->assertTrue($user->hasRole('admin'));
     }
 }
