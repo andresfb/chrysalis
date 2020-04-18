@@ -50,15 +50,11 @@ class ProjectPolicy
      * Determine whether the user can create models.
      *
      * @param User $user
-     * @return mixed
+     * @return bool
      */
     public function create(User $user)
     {
-        if ($user->can('projects.create')) {
-            return true;
-        }
-
-        return null;
+        return $user->can('projects.create');
     }
 
     /**
@@ -102,7 +98,7 @@ class ProjectPolicy
      */
     public function restore(User $user, Project $project)
     {
-        if ($user->hasRole('super-admin')) {
+        if ($user->hasRole('admin')) {
             return true;
         }
 
@@ -118,7 +114,7 @@ class ProjectPolicy
      */
     public function forceDelete(User $user, Project $project)
     {
-        if ($user->hasRole('super-admin')) {
+        if ($user->hasRole('admin')) {
             return true;
         }
 

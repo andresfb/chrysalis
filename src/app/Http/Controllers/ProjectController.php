@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Services\ProjectService;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\StoreProjectRequest;
 
 /**
  * Class ProjectController
@@ -16,7 +19,6 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
      */
     public function index()
     {
@@ -26,7 +28,6 @@ class ProjectController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
      */
     public function create()
     {
@@ -36,19 +37,26 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return Response
+     * @param StoreProjectRequest $request
+     * @param ProjectService $service
+     * @return RedirectResponse
      */
-    public function store(Project $project)
+    public function store(StoreProjectRequest $request, ProjectService $service)
     {
-        //
+        $attibutes = $service->checkAssignedOwner($request->validated());
+        if (empty($attibutes)) {
+            abort(403, $service->error);
+        }
+
+        $project = Project::create($attibutes);
+
+        return redirect()->route('project.show', $project->id);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
      */
     public function show($id)
     {
@@ -59,7 +67,6 @@ class ProjectController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return Response
      */
     public function edit($id)
     {
@@ -71,7 +78,6 @@ class ProjectController extends Controller
      *
      * @param Request $request
      * @param  int  $id
-     * @return Response
      */
     public function update(Request $request, $id)
     {
@@ -82,7 +88,6 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
      */
     public function destroy($id)
     {

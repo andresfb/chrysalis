@@ -48,10 +48,14 @@ class Project extends Model
                 $parts[] = $title[0];
                 $parts[] = $title[1];
             } else {
-                $parts = explode(" ", $title);
+                $words = explode(" ", $title);
+                $parts[] = $words[0][0];
+                $parts[] = $words[1][0];
+                empty($words[2]) ?: $parts[] = $words[2][0];
             }
 
-            $project->code = strtoupper($parts[0] . $parts[1]) . "-" . $project->id;
+            $sufix = !empty($parts[2]) ? $parts[2] : "";
+            $project->code = strtoupper($parts[0] . $parts[1] . $sufix);
             $project->save();
         });
     }
@@ -64,16 +68,6 @@ class Project extends Model
     public function owner()
     {
         return $this->belongsTo(User::class, 'id', 'owner_id');
-    }
-
-    /**
-     * category Method.
-     *
-     * @return BelongsTo
-     */
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
     }
 
     /**
@@ -104,5 +98,23 @@ class Project extends Model
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    /**
+     * createRules Method.
+     *
+     * @return array
+     */
+    public static function createRules()
+    {
+        $userclass = User::class;
+        $statusclass = ProjectStatus::class;
+
+        return [
+            'owner_id'    => ['required', 'integer', "exists:{$userclass},id"],
+            'status_id'   => ['required', 'integer', "exists:{$statusclass},id"],
+            'title'       => ['required', 'string',  'max:150'],
+            'description' => ['nullable', 'string'],
+        ];
     }
 }

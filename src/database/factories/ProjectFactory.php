@@ -11,14 +11,14 @@ use Spatie\Permission\Models\Role;
 
 $factory->define(Project::class, function (Faker $faker) {
     $user = factory(User::class)->create();
-    $role = Role::findByName('super-admin');
+    $role = Role::findByName('user');
     $user->assignRole($role);
     $status = ProjectStatus::firstWhere('name', 'Active');
 
     return [
         'owner_id'    => $user->id,
         'status_id'   => $status->id,
-        'title'       => $faker->title,
+        'title'       => $faker->sentence,
         'description' => $faker->paragraph
     ];
 });
