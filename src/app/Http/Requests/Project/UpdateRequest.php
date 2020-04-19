@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Project;
 
 use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class StoreProjectRequest
+ * Class UpdateProjectRequest
  *
  * @package App\Http\Requests
  */
-class StoreProjectRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,7 +19,7 @@ class StoreProjectRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->can('create', Project::class);
+        return auth()->user()->can('update', $this->project);
     }
 
     /**
@@ -29,6 +29,6 @@ class StoreProjectRequest extends FormRequest
      */
     public function rules()
     {
-        return Project::createRules();
+        return Project::validationRules();
     }
 }

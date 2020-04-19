@@ -53,4 +53,32 @@ class ProjectManagerAccessTest extends CreateUsersCase
 
         $this->assertDatabaseMissing('projects', $project);
     }
+
+    /** @test */
+    public function manager_can_upate_its_own_project()
+    {
+        $this->withoutExceptionHandling();
+
+        $project = factory(Project::class)->create(['owner_id' => $this->user->id]);
+
+        $exptected = factory(Project::class)->raw(['owner_id' => $this->user->id]);
+
+        $this->patch(route('project.update', [$project->id]), $exptected);
+
+        $this->assertDatabaseHas('projects', $exptected);
+    }
+
+    /** @test */
+    public function manager_cannot_update_others_project()
+    {
+        $assignee = $this->create_manager();
+
+        $project = factory(Project::class)->create(['owner_id' => $assignee->id]);
+
+        $exptected = factory(Project::class)->raw(['owner_id' => $this->user->id]);
+
+        $this->patch(route('project.update', [$project->id]), $exptected)->assertForbidden();
+
+        $this->assertDatabaseMissing('projects', $exptected);
+    }
 }

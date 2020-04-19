@@ -67,7 +67,7 @@ class Project extends Model
      */
     public function owner()
     {
-        return $this->belongsTo(User::class, 'id', 'owner_id');
+        return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 
     /**
@@ -100,19 +100,17 @@ class Project extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
+
     /**
      * createRules Method.
      *
      * @return array
      */
-    public static function createRules()
+    public static function validationRules()
     {
-        $userclass = User::class;
-        $statusclass = ProjectStatus::class;
-
         return [
-            'owner_id'    => ['required', 'integer', "exists:{$userclass},id"],
-            'status_id'   => ['required', 'integer', "exists:{$statusclass},id"],
+            'owner_id'    => ['required', 'integer', 'exists:'.User::class.',id'],
+            'status_id'   => ['required', 'integer', 'exists:'.ProjectStatus::class.',id'],
             'title'       => ['required', 'string',  'max:150'],
             'description' => ['nullable', 'string'],
         ];

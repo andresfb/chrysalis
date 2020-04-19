@@ -52,6 +52,7 @@ class SeedBaseRolesPermissions extends Migration
                 'projects.create.*',
                 'projects.read.*',
                 'projects.update.own',
+                'projects.delete.own',
                 'issues.create.*',
                 'issues.read.*',
                 'issues.update.*',

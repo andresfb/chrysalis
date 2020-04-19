@@ -61,16 +61,12 @@ class ProjectPolicy
      * Determine whether the user can update the model.
      *
      * @param User $user
-     * @param  Project  $project
-     * @return mixed
+     * @param Project $project
+     * @return bool
      */
     public function update(User $user, Project $project)
     {
-        if ($user->can('projects.update.own') && $user->is($project->owner)) {
-            return true;
-        }
-
-        return null;
+        return ($user->can('projects.update.own') && $user->is($project->owner));
     }
 
     /**
@@ -82,42 +78,28 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        if ($user->can('projects.delete')) {
-            return true;
-        }
-
-        return null;
+        return $user->can('projects.delete') && $user->is($project->owner) && !count($project->issues);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param User $user
-     * @param  Project  $project
      * @return mixed
      */
-    public function restore(User $user, Project $project)
+    public function restore(User $user)
     {
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        return null;
+        return $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param User $user
-     * @param  Project  $project
      * @return mixed
      */
-    public function forceDelete(User $user, Project $project)
+    public function forceDelete(User $user)
     {
-        if ($user->hasRole('admin')) {
-            return true;
-        }
-
-        return null;
+        return $user->hasRole('admin');
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Project\DeleteRequest;
+use Exception;
 use App\Models\Project;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\StoreProjectRequest;
+use App\Http\Requests\Project\StoreRequest;
+use App\Http\Requests\Project\UpdateRequest;
 
 /**
  * Class ProjectController
@@ -37,11 +38,11 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreProjectRequest $request
+     * @param StoreRequest $request
      * @param ProjectService $service
      * @return RedirectResponse
      */
-    public function store(StoreProjectRequest $request, ProjectService $service)
+    public function store(StoreRequest $request, ProjectService $service)
     {
         $attibutes = $service->checkAssignedOwner($request->validated());
         if (empty($attibutes)) {
@@ -76,21 +77,29 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param UpdateRequest $request
+     * @param Project $project
+     * @return RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, Project $project)
     {
-        //
+        $project->update($request->validated());
+
+        return redirect()->route('project.show', $project->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param DeleteRequest $request
+     * @param Project $project
+     * @return RedirectResponse
+     * @throws Exception
      */
-    public function destroy($id)
+    public function destroy(DeleteRequest $request, Project $project)
     {
-        //
+        $project->delete();
+
+        return redirect()->route('project.index');
     }
 }

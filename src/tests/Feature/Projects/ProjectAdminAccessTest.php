@@ -11,7 +11,9 @@ class ProjectAdminAccessTest extends CreateUsersCase
     {
         parent::setUp();
 
-        $this->signIn($this->create_admin());
+        $this->user = $this->create_admin();
+
+        $this->signIn($this->user);
     }
 
     /** @test */
@@ -26,5 +28,43 @@ class ProjectAdminAccessTest extends CreateUsersCase
         $this->post(route('project.store'), $project);
 
         $this->assertDatabaseHas('projects', $project);
+    }
+
+    /** @test */
+    public function admin_can_update_any_project()
+    {
+        $this->withoutExceptionHandling();
+
+        $manager = $this->create_manager();
+
+        $project = factory(Project::class)->create(['owner_id' => $manager->id]);
+
+        $newmanager = $this->create_manager();
+
+        $exptected = factory(Project::class)->raw(['owner_id' => $newmanager->id]);
+
+        $this->patch(route('project.update', [$project->id]), $exptected);
+
+        $this->assertDatabaseHas('projects', $exptected);
+    }
+
+    /** @test */
+    public function admin_can_soft_delete_any_project()
+    {
+        $this->withoutExceptionHandling();
+
+        $project = factory(Project::class)->create(['owner_id' => $this->user->id]);
+
+        $projectid = $project->id;
+
+        $this->delete(route('project.destroy', [$projectid]));
+
+        $project = Project::find($projectid);
+
+        $this->assertNull($project);
+
+        $project = Project::withTrashed()->where('id', $projectid)->get();
+
+        $this->assertNotNull($project);
     }
 }
