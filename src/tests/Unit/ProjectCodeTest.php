@@ -13,15 +13,13 @@ class ProjectCodeTest extends TestCase
     /** @test */
     public function project_assigns_a_code()
     {
-        $created = factory(Project::class)->create(['title' => 'Manipolds']);
+        $created = factory(Project::class)->create(['title' => 'Manifolds']);
 
         $found = Project::find($created->id);
 
         $this->assertNotNull($found);
 
         $this->assertNotEmpty($found->code);
-
-        $this->assertNotEquals("NEW", $found->code);
 
         $code = "MA";
 

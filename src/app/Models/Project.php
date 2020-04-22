@@ -31,17 +31,7 @@ class Project extends Model
      */
     protected static function booted()
     {
-        static::creating(function ($project) {
-            if (empty($project->code)) {
-                $project->code = "NEW";
-            }
-        });
-
-        static::created(function ($project) {
-            if ($project->code != 'NEW') {
-                return;
-            }
-
+        static::saving(function ($project) {
             $parts = [];
             $title = trim($project->title);
             if (!Str::contains($title, " ")) {
@@ -54,9 +44,8 @@ class Project extends Model
                 empty($words[2]) ?: $parts[] = $words[2][0];
             }
 
-            $sufix = !empty($parts[2]) ? $parts[2] : "";
-            $project->code = strtoupper($parts[0] . $parts[1] . $sufix);
-            $project->save();
+            $suffix = !empty($parts[2]) ? $parts[2] : "";
+            $project->code = strtoupper($parts[0] . $parts[1] . $suffix);
         });
     }
 
