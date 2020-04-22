@@ -78,7 +78,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        return $user->can('projects.delete') && $user->is($project->owner) && !count($project->issues);
+        return $user->can('projects.delete.own') && $user->is($project->owner);
     }
 
     /**

@@ -44,12 +44,12 @@ class ProjectController extends Controller
      */
     public function store(StoreRequest $request, ProjectService $service)
     {
-        $attibutes = $service->checkAssignedOwner($request->validated());
-        if (empty($attibutes)) {
-            abort(403, $service->error);
+        $attributes = $service->checkAssignedOwner($request->validated());
+        if (empty($attributes)) {
+            back()->with('error', $service->error);
         }
 
-        $project = Project::create($attibutes);
+        $project = Project::create($attributes);
 
         return redirect()->route('project.show', $project->id);
     }
@@ -92,12 +92,17 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param DeleteRequest $request
+     * @param ProjectService $service
      * @param Project $project
      * @return RedirectResponse
      * @throws Exception
      */
-    public function destroy(DeleteRequest $request, Project $project)
+    public function destroy(DeleteRequest $request, ProjectService $service, Project $project)
     {
+        if (!$service->canDelete($project)) {
+            back()->with('error', $service->error);
+        }
+
         $project->delete();
 
         return redirect()->route('project.index');

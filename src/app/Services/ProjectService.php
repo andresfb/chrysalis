@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\Project;
 use App\Models\User;
 
 /**
@@ -31,6 +32,22 @@ class ProjectService
         }
 
         $this->error = 'Project needs a valid Manager';
+        return false;
+    }
+
+    /**
+     * @param Project $project
+     * @return bool
+     */
+    public function canDelete(Project $project)
+    {
+        $this->error = "";
+
+        if (!count($project->issues)) {
+            return true;
+        }
+
+        $this->error = "Cannot Delete Project with existing Issues";
         return false;
     }
 }

@@ -41,11 +41,11 @@ class ProjectAdminAccessTest extends CreateUsersCase
 
         $newmanager = $this->create_manager();
 
-        $exptected = factory(Project::class)->raw(['owner_id' => $newmanager->id]);
+        $expected = factory(Project::class)->raw(['owner_id' => $newmanager->id]);
 
-        $this->patch(route('project.update', [$project->id]), $exptected);
+        $this->patch(route('project.update', [$project->id]), $expected);
 
-        $this->assertDatabaseHas('projects', $exptected);
+        $this->assertDatabaseHas('projects', $expected);
     }
 
     /** @test */
