@@ -23,7 +23,7 @@ class ProjectPolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->can('projects.read')) {
+        if ($user->can('read.project')) {
             return true;
         }
 
@@ -39,7 +39,7 @@ class ProjectPolicy
      */
     public function view(User $user, Project $project)
     {
-        if ($user->can('projects.read')) {
+        if ($user->can('read.project')) {
             return true;
         }
 
@@ -54,7 +54,7 @@ class ProjectPolicy
      */
     public function create(User $user)
     {
-        return $user->can('projects.create');
+        return $user->can('create.project');
     }
 
     /**
@@ -66,7 +66,7 @@ class ProjectPolicy
      */
     public function update(User $user, Project $project)
     {
-        return ($user->can('projects.update.own') && $user->is($project->owner));
+        return ($user->can('update.project.own') && $user->is($project->owner));
     }
 
     /**
@@ -78,7 +78,7 @@ class ProjectPolicy
      */
     public function delete(User $user, Project $project)
     {
-        return $user->can('projects.delete.own') && $user->is($project->owner);
+        return $user->can('delete.project.own') && $user->is($project->owner);
     }
 
     /**
