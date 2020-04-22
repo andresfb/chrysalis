@@ -50,6 +50,8 @@ Temporary Items
 # Custom Values
 .sync/
 .env.production
+.env.server
+.env.composer
 contruction/
 webfonts
 laradock

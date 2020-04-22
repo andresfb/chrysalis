@@ -57,6 +57,7 @@ services:
     container_name: php
     volumes:
       - ./src:/var/www
+      - ./src/.env.server:/var/www/.env
       - ./config/php/local.ini:/usr/local/etc/php/conf.d/local.ini
     user: 1000:1000
     ports:

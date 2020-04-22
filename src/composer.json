@@ -73,6 +73,7 @@
             "@php artisan key:generate --ansi"
         ],
         "post-install-cmd": [
+            "mkdir -p public/vendor",
             "rm -f public/vendor/adminlte",
             "rm -f public/vendor/plugins",
             "ln -s ../../vendor/almasaeed2010/adminlte/dist public/vendor/adminlte",
