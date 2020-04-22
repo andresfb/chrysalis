@@ -23,7 +23,7 @@ class CreateIssuesTable extends Migration
             $table->string('code', 20);
             $table->string('title');
             $table->text('description')->nullable();
-            $table->text('enviroment')->nullable();
+            $table->text('environment')->nullable();
             $table->dateTime('due_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
