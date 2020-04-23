@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Project\DeleteRequest;
 use Exception;
 use App\Models\Project;
+use Illuminate\View\View;
 use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\View\Factory;
 use App\Http\Requests\Project\StoreRequest;
+use App\Http\Requests\Project\DeleteRequest;
 use App\Http\Requests\Project\UpdateRequest;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Class ProjectController
@@ -19,20 +22,20 @@ class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
      */
     public function index()
     {
-        //
+        $projects = Project::orderBy('created_at', 'DESC')->get();
+
+        return view('project.index', compact('projects'));
     }
 
     /**
      * Show the form for creating a new resource.
-     *
      */
     public function create()
     {
-        //
+        return view('project.create');
     }
 
     /**
@@ -57,21 +60,23 @@ class ProjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param Project $project
+     * @return Application|Factory|View
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        return view('project.show', compact('project'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param Project $project
+     * @return Application|Factory|View
      */
-    public function edit($id)
+    public function edit(Project $project)
     {
-        //
+        return view('project.edit', compact('project'));
     }
 
     /**
