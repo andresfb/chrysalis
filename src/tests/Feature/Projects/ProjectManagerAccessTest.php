@@ -109,23 +109,27 @@ class ProjectManagerAccessTest extends CreateUsersCase
     {
         $assignee = $this->create_manager();
 
-        $project = factory(Project::class)->create(['owner_id' => $assignee->id]);
+        $expected = factory(Project::class)->raw(['owner_id' => $assignee->id]);
 
-        $this->delete(route('project.destroy', [$project->id]))->assertForbidden();
+        $actual = Project::create($expected);
 
-        $this->assertDatabaseMissing('projects', $project->toArray());
+        $this->delete(route('project.destroy', [$actual->id]))->assertForbidden();
+
+        $this->assertDatabaseHas('projects', $expected);
     }
 
     /** @test */
     public function manager_cannot_delete_own_project_with_issues()
     {
-        $project = factory(Project::class)->create(['owner_id' => $this->user->id]);
+        $expected = factory(Project::class)->raw(['owner_id' => $this->user->id]);
 
-        factory(Issue::class)->create(['project_id' => $project->id]);
+        $actual = Project::create($expected);
 
-        $this->delete(route('project.destroy', [$project->id]))
+        factory(Issue::class)->create(['project_id' => $actual->id]);
+
+        $this->delete(route('project.destroy', [$actual->id]))
             ->assertSessionHas('error', 'Cannot Delete Project with existing Issues');
 
-        $this->assertDatabaseMissing('projects', $project->toArray());
+        $this->assertDatabaseHas('projects', $expected);
     }
 }
