@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Projects;
 
+use App\Models\Issue;
 use App\Models\Project;
 use Tests\BaseTests\CreateUsersCase;
 
@@ -53,18 +54,64 @@ class ProjectAdminAccessTest extends CreateUsersCase
     {
         $this->withoutExceptionHandling();
 
-        $project = factory(Project::class)->create(['owner_id' => $this->user->id]);
+        $expected = factory(Project::class)->raw(['owner_id' => $this->user->id]);
 
-        $projectid = $project->id;
+        $actual = Project::create($expected);
 
-        $this->delete(route('project.destroy', [$projectid]));
+        $this->delete(route('project.destroy', [$actual->id]));
 
-        $project = Project::find($projectid);
+        $this->assertDatabaseHas('projects', $expected);
 
-        $this->assertNull($project);
-
-        $project = Project::withTrashed()->where('id', $projectid)->get();
+        $project = Project::withTrashed()->where('id', $actual->id)->get();
 
         $this->assertNotNull($project);
+    }
+
+    /** @test */
+    public function admin_can_soft_delete_any_project_with_issues()
+    {
+        $this->withoutExceptionHandling();
+
+        $expected = factory(Project::class)->raw(['owner_id' => $this->user->id]);
+
+        $actual = Project::create($expected);
+
+        $issue = factory(Issue::class)->raw(['project_id' => $actual->id]);
+
+        $actual->issues()->create($issue);
+
+        $this->delete(route('project.destroy', [$actual->id]));
+
+        $this->assertDatabaseHas('projects', $expected);
+
+        $this->assertDatabaseHas('issues', $issue);
+
+        $project = Project::withTrashed()->where('id', $actual->id)->get();
+
+        $this->assertNotNull($project);
+
+        $issue = Issue::withTrashed()->where('project_id', $actual->id);
+
+        $this->assertNotNull($issue);
+    }
+
+    /** @test */
+    public function admin_can_force_delete_any_project()
+    {
+        $this->withoutExceptionHandling();
+
+        $expected = factory(Project::class)->raw(['owner_id' => $this->user->id]);
+
+        $actual = Project::create($expected);
+
+        $issue = factory(Issue::class)->raw(['project_id' => $actual->id]);
+
+        $actual->issues()->create($issue);
+
+        $this->delete(route('project.delete', [$actual->id]));
+
+        $this->assertDatabaseMissing('projects', $expected);
+
+        $this->assertDatabaseMissing('issues', $issue);
     }
 }

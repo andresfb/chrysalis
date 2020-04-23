@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Iatstuti\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * Class Project
@@ -16,13 +17,19 @@ use Illuminate\Support\Str;
  */
 class Project extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, CascadeSoftDeletes;
 
     /** @var array */
     protected $guarded = ['code'];
 
     /** @var array */
     protected $hidden = ['code'];
+
+    /** @var array */
+    protected $dates = ['deleted_at'];
+
+    /** @var array */
+    protected $cascadeDeletes = ['issues'];
 
     /**
      * booted Method.
@@ -31,7 +38,12 @@ class Project extends Model
      */
     protected static function booted()
     {
-        static::saving(function ($project) {
+        static::saving(function (Project $project) {
+            if (empty($project->title)) {
+                $project->code = "NEW";
+                return;
+            }
+
             $parts = [];
             $title = trim($project->title);
             if (!Str::contains($title, " ")) {
