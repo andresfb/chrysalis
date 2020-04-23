@@ -41,4 +41,22 @@ class ProjectCodeTest extends TestCase
 
         $this->assertEquals($code, $found->code);
     }
+
+    /** @test */
+    public function projects_updates_the_code_field()
+    {
+        $created = factory(Project::class)->create(['title' => 'Manifolds']);
+
+        $project = Project::find($created->id);
+
+        $project->title = "Lightning Round";
+
+        $project->save();
+
+        $project->fresh();
+
+        $code = "LR";
+
+        $this->assertEquals($code, $project->code);
+    }
 }

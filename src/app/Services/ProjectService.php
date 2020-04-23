@@ -41,6 +41,10 @@ class ProjectService
      */
     public function canDelete(Project $project)
     {
+        if (auth()->user()->hasRole('admin')) {
+            return true;
+        }
+
         $this->error = "";
 
         if (!count($project->issues)) {

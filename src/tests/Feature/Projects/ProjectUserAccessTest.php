@@ -33,10 +33,20 @@ class ProjectUserAccessTest extends CreateUsersCase
 
         $project = factory(Project::class)->create(['owner_id' => $assignee->id]);
 
-        $exptected = factory(Project::class)->raw(['owner_id' => $this->user->id]);
+        $expected = factory(Project::class)->raw(['owner_id' => $this->user->id]);
 
-        $this->patch(route('project.update', [$project->id]), $exptected)->assertForbidden();
+        $this->patch(route('project.update', [$project->id]), $expected)->assertForbidden();
 
-        $this->assertDatabaseMissing('projects', $exptected);
+        $this->assertDatabaseMissing('projects', $expected);
+    }
+
+    /** @test */
+    public function user_cannot_delete_project()
+    {
+        $project = factory(Project::class)->create();
+
+        $this->delete(route('project.destroy', [$project['id']]))->assertForbidden();
+
+        $this->assertDatabaseMissing('projects', $project->toArray());
     }
 }
