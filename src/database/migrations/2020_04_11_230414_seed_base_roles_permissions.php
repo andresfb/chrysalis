@@ -105,7 +105,7 @@ class SeedBaseRolesPermissions extends Migration
                 'read.comment.*',
                 'read.tag.*',
                 'read.attachment.*',
-            ]
+            ],
         ];
 
         // Reset cached roles and permissions
@@ -114,6 +114,7 @@ class SeedBaseRolesPermissions extends Migration
         foreach ($permissions as $permission) {
 
             Permission::findOrCreate($permission);
+
         }
 
         foreach ($rolesperms as $role => $permissions) {
@@ -126,6 +127,7 @@ class SeedBaseRolesPermissions extends Migration
                 $role->givePermissionTo($permission);
 
             }
+
         }
     }
 

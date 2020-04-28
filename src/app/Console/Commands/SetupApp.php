@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 
 class SetupApp extends Command
@@ -41,6 +42,7 @@ class SetupApp extends Command
             $user->name = $name;
             $user->email = $email;
             $user->password = Hash::make($password);
+            $user->email_verified_at = Date::now();
             $user->save();
         } catch (\Exception $e) {
             echo "\n\033[0;31mError Saving the User info:\n";
