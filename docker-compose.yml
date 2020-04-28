@@ -108,6 +108,7 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     volumes:
+      - ./config/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
       - ./config/phpmyadmin/sessions_ex.ini:/usr/local/etc/php/conf.d/sessions_ex.ini
     env_file:
       - .env
