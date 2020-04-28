@@ -91,15 +91,11 @@ class ProjectManagerAccessTest extends CreateUsersCase
 
         $project = factory(Project::class)->create(['owner_id' => $this->user->id]);
 
-        $projectid = $project->id;
+        $this->delete(route('project.destroy', [$project->id]));
 
-        $this->delete(route('project.destroy', [$projectid]));
+        $this->assertSoftDeleted($project);
 
-        $project = Project::find($projectid);
-
-        $this->assertNull($project);
-
-        $project = Project::withTrashed()->where('id', $projectid)->get();
+        $project = Project::withTrashed()->where('id', $project->id)->get();
 
         $this->assertNotNull($project);
     }
