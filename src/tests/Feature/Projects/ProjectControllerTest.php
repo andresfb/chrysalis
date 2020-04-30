@@ -4,12 +4,9 @@ namespace Tests\Feature\Projects;
 
 use App\Models\Project;
 use Tests\BaseTests\CreateUsersCase;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class ProjectControllerTest extends CreateUsersCase
 {
-    use WithFaker;
-
     protected function setUp(): void
     {
         parent::setUp();
