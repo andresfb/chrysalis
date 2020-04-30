@@ -17,8 +17,7 @@ class CreateActivitiesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('type_id');
-            $table->unsignedBigInteger('activitable_id');
-            $table->string('activitable_type');
+            $table->morphs('activitable');
             $table->text('activity');
             $table->text('change')->nullable();
             $table->softDeletes();
