@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Events\ProjectSaving;
+use App\Events\ProjectSavingEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
@@ -33,7 +33,7 @@ class Project extends Model
 
     /** @var array */
     protected $dispatchesEvents = [
-        'saving' => ProjectSaving::class,
+        'saving' => ProjectSavingEvent::class,
     ];
 
     /**

@@ -5,7 +5,7 @@ namespace App\Events;
 use App\Models\Project;
 use Illuminate\Queue\SerializesModels;
 
-class ProjectSaving
+class ProjectSavingEvent
 {
     use SerializesModels;
 

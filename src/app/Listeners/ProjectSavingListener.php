@@ -4,14 +4,14 @@ namespace App\Listeners;
 
 use App\Models\Project;
 use Illuminate\Support\Str;
-use App\Events\ProjectSaving as ProjectSavingEvent;
+use App\Events\ProjectSavingEvent as ProjectSavingEvent;
 
 /**
  * Class ProjectSaving
  *
  * @package App\Listeners
  */
-class ProjectSaving
+class ProjectSavingListener
 {
     /**
      * Handle the event.
