@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
+use App\Events\ProjectSaving;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
@@ -31,35 +31,10 @@ class Project extends Model
     /** @var array */
     protected $cascadeDeletes = ['issues'];
 
-    /**
-     * booted Method.
-     *
-     * @return void
-     */
-    protected static function booted()
-    {
-        static::saving(function (Project $project) {
-            if (empty($project->title)) {
-                $project->code = "NEW";
-                return;
-            }
-
-            $parts = [];
-            $title = trim($project->title);
-            if (!Str::contains($title, " ")) {
-                $parts[] = $title[0];
-                $parts[] = $title[1];
-            } else {
-                $words = explode(" ", $title);
-                $parts[] = $words[0][0];
-                $parts[] = $words[1][0];
-                empty($words[2]) ?: $parts[] = $words[2][0];
-            }
-
-            $suffix = !empty($parts[2]) ? $parts[2] : "";
-            $project->code = strtoupper($parts[0] . $parts[1] . $suffix);
-        });
-    }
+    /** @var array */
+    protected $dispatchesEvents = [
+        'saving' => ProjectSaving::class,
+    ];
 
     /**
      * owner Method.

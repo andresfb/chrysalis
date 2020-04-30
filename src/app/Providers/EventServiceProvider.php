@@ -2,11 +2,17 @@
 
 namespace App\Providers;
 
+use App\Listeners\ProjectSaving;
 use Illuminate\Auth\Events\Registered;
+use App\Events\ProjectSaving as ProjectSavingEvent;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
+/**
+ * Class EventServiceProvider
+ *
+ * @package App\Providers
+ */
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -18,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        ProjectSavingEvent::class => [
+            ProjectSaving::class
+        ]
     ];
 
     /**
