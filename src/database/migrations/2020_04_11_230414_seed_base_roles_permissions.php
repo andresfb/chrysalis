@@ -105,6 +105,7 @@ class SeedBaseRolesPermissions extends Migration
                 'read.comment.*',
                 'read.tag.*',
                 'read.attachment.*',
+                'read.user.own',
             ],
         ];
 

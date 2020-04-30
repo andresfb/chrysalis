@@ -11,11 +11,8 @@ use App\Models\User;
  *
  * @package App\Services
  */
-class ProjectService
+class ProjectService extends BaseService
 {
-    /** @var string */
-    public $error = "";
-
     /**
      * checkAssignedOwner Method.
      *

@@ -21,6 +21,9 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     // Home
     Route::get('/', 'HomeController@index')->name('home');
 
+    // Users
+    Route::post('/user/promote', 'UserPromoteController')->name('user.promote');
+
     // Projects
     Route::resource('project', 'ProjectController');
     Route::delete('/project/{project}/delete', 'ProjectDeleteController')->name('project.delete');
