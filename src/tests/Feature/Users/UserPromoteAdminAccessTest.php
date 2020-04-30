@@ -23,11 +23,11 @@ class UserPromoteAdminAccessTest extends CreateUsersCase
 
         $guest = $this->create_guest();
 
-        $role = Role::where('name', 'user')->first();
+        $expected = 'user';
 
         $response = $this->post(route('user.promote'), [
             'owner_id' => $guest->id,
-            'role_id'  => $role->id
+            'role'     => $expected
         ]);
 
         $response->assertOk();
@@ -36,7 +36,7 @@ class UserPromoteAdminAccessTest extends CreateUsersCase
 
         $this->assertFalse($guest->hasRole('guest'));
 
-        $this->assertTrue($guest->hasRole('user'));
+        $this->assertTrue($guest->hasRole($expected));
     }
 
     /** @test */
@@ -46,11 +46,11 @@ class UserPromoteAdminAccessTest extends CreateUsersCase
 
         $user = $this->create_user();
 
-        $role = Role::where('name', 'manager')->first();
+        $expected = 'manager';
 
         $response = $this->post(route('user.promote'), [
             'owner_id' => $user->id,
-            'role_id'  => $role->id
+            'role'     => $expected
         ]);
 
         $response->assertOk();
@@ -59,6 +59,6 @@ class UserPromoteAdminAccessTest extends CreateUsersCase
 
         $this->assertFalse($user->hasRole('user'));
 
-        $this->assertTrue($user->hasRole('manager'));
+        $this->assertTrue($user->hasRole($expected));
     }
 }

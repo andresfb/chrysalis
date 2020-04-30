@@ -14,16 +14,16 @@ class UserPromoteNonAdminAccessTest extends CreateUsersCase
 
         $this->signIn($manager);
 
-        $role = Role::where('name', 'admin')->first();
+        $expected = 'admin';
 
         $this->post(route('user.promote'), [
             'owner_id' => $manager->id,
-            'role_id'  => $role->id
+            'role'  => $expected
         ])->assertForbidden();
 
         $manager = $manager->fresh();
 
-        $this->assertFalse($manager->hasRole('admin'));
+        $this->assertFalse($manager->hasRole($expected));
 
         $this->assertTrue($manager->hasRole('manager'));
     }
@@ -35,16 +35,16 @@ class UserPromoteNonAdminAccessTest extends CreateUsersCase
 
         $this->signIn($manager);
 
-        $role = Role::where('name', 'user')->first();
+        $expected = 'user';
 
         $this->post(route('user.promote'), [
             'owner_id' => $manager->id,
-            'role_id'  => $role->id
+            'role'  => $expected
         ])->assertForbidden();
 
         $manager = $manager->fresh();
 
-        $this->assertFalse($manager->hasRole('user'));
+        $this->assertFalse($manager->hasRole($expected));
 
         $this->assertTrue($manager->hasRole('manager'));
     }
@@ -56,16 +56,16 @@ class UserPromoteNonAdminAccessTest extends CreateUsersCase
 
         $this->signIn($user);
 
-        $role = Role::where('name', 'guest')->first();
+        $expected = 'guest';
 
         $this->post(route('user.promote'), [
             'owner_id' => $user->id,
-            'role_id'  => $role->id
+            'role'  => $expected
         ])->assertForbidden();
 
         $user = $user->fresh();
 
-        $this->assertFalse($user->hasRole('guest'));
+        $this->assertFalse($user->hasRole($expected));
 
         $this->assertTrue($user->hasRole('user'));
     }
@@ -77,16 +77,16 @@ class UserPromoteNonAdminAccessTest extends CreateUsersCase
 
         $this->signIn($guest);
 
-        $role = Role::where('name', 'user')->first();
+        $expected = 'user';
 
         $this->post(route('user.promote'), [
             'owner_id' => $guest->id,
-            'role_id'  => $role->id
+            'role'  => $expected
         ])->assertForbidden();
 
         $guest = $guest->fresh();
 
-        $this->assertFalse($guest->hasRole('user'));
+        $this->assertFalse($guest->hasRole($expected));
 
         $this->assertTrue($guest->hasRole('guest'));
     }

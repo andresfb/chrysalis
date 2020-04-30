@@ -14,7 +14,7 @@ use Illuminate\Notifications\Notification;
 class UserVerifiedNotification extends Notification
 {
     /**
-     * @var User
+     * @var MustVerifyEmail
      */
     private $user;
 
@@ -49,7 +49,7 @@ class UserVerifiedNotification extends Notification
     {
         return [
             'message' => 'New user verified',
-            'user' => $this->user->toArray(),
+            'user'    => collect($this->user)->toArray(),
         ];
     }
 }
