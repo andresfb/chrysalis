@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\Events\ProjectSavingEvent;
-use App\Listeners\UserVerifiedListener;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Events\Registered;
-use App\Listeners\ProjectSavingListener;
+use App\Listeners\User\UserVerifiedListener;
+use App\Listeners\Project\ProjectSavingListener;
+use App\Events\Project\ProjectSavingEvent;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 

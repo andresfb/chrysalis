@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\Project\ForceDeleteRequest;
+use App\Http\Requests\Project\ProjectForceDeleteRequest;
 
 class ProjectDeleteController extends Controller
 {
     /**
      * Handle the incoming request.
      *
-     * @param ForceDeleteRequest $request
+     * @param ProjectForceDeleteRequest $request
      * @param Project $project
      * @return RedirectResponse
      */
-    public function __invoke(ForceDeleteRequest $request, Project $project)
+    public function __invoke(ProjectForceDeleteRequest $request, Project $project)
     {
         $project->forceDelete();
 

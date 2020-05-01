@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Events\ProjectSavingEvent;
 use Illuminate\Database\Eloquent\Model;
+use App\Events\Project\ProjectSavingEvent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\User;
 
 use App\Models\User;
-use App\Notifications\UserVerifiedNotification;
 use Illuminate\Auth\Events\Verified;
+use App\Notifications\User\UserVerifiedNotification;
 
 /**
  * Class UserVerifiedListener

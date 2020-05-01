@@ -6,7 +6,12 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PromoteUserRequest extends FormRequest
+/**
+ * Class UserPromoteRequest
+ *
+ * @package App\Http\Requests\User
+ */
+class UserPromoteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +32,7 @@ class PromoteUserRequest extends FormRequest
     {
         return [
             'owner_id' => ['required', 'integer', 'exists:'.User::class.',id'],
-            'role'     => ['required', 'string', 'exists:'.Role::class.',name']
+            'role'     => ['required', 'string',  'exists:'.Role::class.',name']
         ];
     }
 }

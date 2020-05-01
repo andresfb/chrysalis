@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Listeners\Project;
 
 use App\Models\Project;
 use Illuminate\Support\Str;
-use App\Events\ProjectSavingEvent as ProjectSavingEvent;
+use App\Events\Project\ProjectSavingEvent;
 
 /**
  * Class ProjectSaving

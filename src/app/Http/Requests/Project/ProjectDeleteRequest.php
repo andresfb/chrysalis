@@ -4,7 +4,12 @@ namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ForceDeleteRequest extends FormRequest
+/**
+ * Class ProjectDeleteRequest
+ *
+ * @package App\Http\Requests\Project
+ */
+class ProjectDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +18,7 @@ class ForceDeleteRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->can('forceDelete', $this->project);
+        return auth()->user()->can('delete', $this->project);
     }
 
     /**

@@ -8,9 +8,9 @@ use Illuminate\View\View;
 use App\Services\ProjectService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
-use App\Http\Requests\Project\StoreRequest;
-use App\Http\Requests\Project\DeleteRequest;
-use App\Http\Requests\Project\UpdateRequest;
+use App\Http\Requests\Project\ProjectStoreRequest;
+use App\Http\Requests\Project\ProjectDeleteRequest;
+use App\Http\Requests\Project\ProjectUpdateRequest;
 use Illuminate\Contracts\Foundation\Application;
 
 /**
@@ -41,11 +41,11 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreRequest $request
+     * @param ProjectStoreRequest $request
      * @param ProjectService $service
      * @return RedirectResponse
      */
-    public function store(StoreRequest $request, ProjectService $service)
+    public function store(ProjectStoreRequest $request, ProjectService $service)
     {
         $attributes = $service->checkAssignedOwner($request->validated());
         if (empty($attributes)) {
@@ -82,11 +82,11 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateRequest $request
+     * @param ProjectUpdateRequest $request
      * @param Project $project
      * @return RedirectResponse
      */
-    public function update(UpdateRequest $request, Project $project)
+    public function update(ProjectUpdateRequest $request, Project $project)
     {
         $project->update($request->validated());
 
@@ -96,13 +96,13 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param DeleteRequest $request
+     * @param ProjectDeleteRequest $request
      * @param ProjectService $service
      * @param Project $project
      * @return RedirectResponse
      * @throws Exception
      */
-    public function destroy(DeleteRequest $request, ProjectService $service, Project $project)
+    public function destroy(ProjectDeleteRequest $request, ProjectService $service, Project $project)
     {
         if (!$service->canDelete($project)) {
             back()->with('error', $service->error);
