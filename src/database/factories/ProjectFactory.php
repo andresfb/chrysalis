@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Role;
 
 $factory->define(Project::class, function (Faker $faker) {
     $user = factory(User::class)->create();
-    $role = Role::findByName('user');
+    $role = Role::findByName('manager');
     $user->assignRole($role);
     $status = ProjectStatus::firstWhere('name', 'Active');
 

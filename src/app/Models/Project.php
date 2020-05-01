@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Events\Project\ProjectSavingEvent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Iatstuti\Database\Support\CascadeSoftDeletes;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -17,13 +18,20 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 class Project extends Model
 {
-    use SoftDeletes, CascadeSoftDeletes;
+    use Cachable, SoftDeletes, CascadeSoftDeletes;
 
     /** @var array */
     protected $guarded = ['code'];
 
     /** @var array */
     protected $hidden = ['code'];
+
+    /** @var array */
+    protected $casts = [
+        'id'        => 'integer',
+        'owner_id'  => 'integer',
+        'status_id' => 'integer',
+    ];
 
     /** @var array */
     protected $dates = ['deleted_at'];
@@ -35,6 +43,7 @@ class Project extends Model
     protected $dispatchesEvents = [
         'saving' => ProjectSavingEvent::class,
     ];
+
 
     /**
      * owner Method.

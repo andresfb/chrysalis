@@ -20,7 +20,7 @@ class CreateIssuesTable extends Migration
             $table->unsignedBigInteger('type_id');
             $table->unsignedBigInteger('status_id');
             $table->unsignedBigInteger('severity_id');
-            $table->string('code', 20);
+            $table->unsignedInteger('number');
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('environment')->nullable();
