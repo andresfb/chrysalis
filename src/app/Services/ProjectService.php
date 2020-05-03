@@ -48,7 +48,7 @@ class ProjectService extends BaseService
             return true;
         }
 
-        $this->error = "Cannot Delete Project with existing Issues";
+        $this->error = "Cannot delete Project with existing Issues";
         return false;
     }
 }

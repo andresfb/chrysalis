@@ -20,6 +20,7 @@ class Project extends Model
 {
     use Cachable, SoftDeletes, CascadeSoftDeletes;
 
+
     /** @var array */
     protected $guarded = ['code'];
 

@@ -6,6 +6,11 @@ use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Project\ProjectForceDeleteRequest;
 
+/**
+ * Class ProjectDeleteController
+ *
+ * @package App\Http\Controllers
+ */
 class ProjectDeleteController extends Controller
 {
     /**

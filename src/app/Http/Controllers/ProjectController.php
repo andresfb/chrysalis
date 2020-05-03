@@ -21,7 +21,10 @@ use Illuminate\Contracts\Foundation\Application;
 class ProjectController extends Controller
 {
     /**
+     * index Method.
      * Display a listing of the resource.
+     *
+     * @return Application|Factory|View
      */
     public function index()
     {

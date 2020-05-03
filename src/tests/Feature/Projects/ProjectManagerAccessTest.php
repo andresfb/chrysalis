@@ -124,7 +124,7 @@ class ProjectManagerAccessTest extends CreateUsersCase
         factory(Issue::class)->create(['project_id' => $actual->id]);
 
         $this->delete(route('project.destroy', [$actual->id]))
-            ->assertSessionHas('error', 'Cannot Delete Project with existing Issues');
+            ->assertSessionHas('error', 'Cannot delete Project with existing Issues');
 
         $this->assertDatabaseHas('projects', $expected);
     }
