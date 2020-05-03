@@ -28,4 +28,9 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::resource('project', 'ProjectController');
     Route::delete('/project/{project}/delete', 'ProjectDeleteController')->name('project.delete');
 
+    // Issues
+    Route::resource('issue', 'IssueController')->except(['index', 'create']);
+    Route::get('/issue/{project}', 'IssueController@index')->name('issue.index');
+    Route::get('/issue/{project}/create', 'IssueController@create')->name('issue.create');
+    Route::delete('/issue/{issue}/delete', 'IssueDeleteController')->name('issue.delete');
 });

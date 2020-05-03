@@ -19,6 +19,7 @@ class Issue extends Model
 {
     use Cachable, SoftDeletes, CascadeSoftDeletes;
 
+
     /**
      * @var array
      */
@@ -51,7 +52,9 @@ class Issue extends Model
         parent::boot();
 
         static::creating(function($model) {
-            $model->number = Issue::where('project_id', $model->project_id)->max('number') + 1;
+            $model->number = Issue::where('project_id', $model->project_id)
+                    ->disableCache()
+                    ->max('number') + 1;
         });
     }
 
@@ -135,5 +138,25 @@ class Issue extends Model
     public function tags()
     {
         return $this->morphToMany(Tag::class, 'taggable');
+    }
+
+    /**
+     * validationRules Method.
+     *
+     * @return array
+     */
+    public static function validationRules()
+    {
+        return [
+            'project_id'  => ['required', 'integer', 'exists:'.Project::class.',id'],
+            'assignee_id' => ['required', 'integer', 'exists:'.User::class.',id'],
+            'type_id'     => ['required', 'integer', 'exists:'.IssueType::class.',id'],
+            'status_id'   => ['required', 'integer', 'exists:'.IssueStatus::class.',id'],
+            'severity_id' => ['required', 'integer', 'exists:'.IssueSeverity::class.',id'],
+            'title'       => ['required', 'string',  'max:150'],
+            'description' => ['nullable', 'string'],
+            'environment' => ['nullable', 'string'],
+            'due_date'    => ['nullable', 'date'],
+        ];
     }
 }

@@ -21,7 +21,7 @@ class CreateIssuesTable extends Migration
             $table->unsignedBigInteger('status_id');
             $table->unsignedBigInteger('severity_id');
             $table->unsignedInteger('number');
-            $table->string('title');
+            $table->string('title', 150);
             $table->text('description')->nullable();
             $table->text('environment')->nullable();
             $table->dateTime('due_date')->nullable();

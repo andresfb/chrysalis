@@ -11,13 +11,12 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(Issue::class, function (Faker $faker) {
-    $project = factory(Project::class)->create();
     $user = factory(User::class)->create();
     $role = Role::findByName('user');
     $user->assignRole($role);
 
     return [
-        'project_id'  => $project->id,
+        'project_id'  => factory(Project::class),
         'assignee_id' => $user->id,
         'type_id'     => $faker->numberBetween(1, 4),
         'status_id'   => $faker->numberBetween(1, 4),
