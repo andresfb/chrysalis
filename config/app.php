@@ -4,9 +4,6 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
-    // TODO: add laravel web sockets
-    // https://beyondco.de/docs/laravel-websockets/getting-started/introduction
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -198,8 +195,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\FortifyServiceProvider::class,
-        App\Providers\JetstreamServiceProvider::class,
+        App\Providers\TenancyServiceProvider::class,
 
     ],
 

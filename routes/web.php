@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredTenantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,16 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', static function () {
     return view('welcome');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+Route::middleware('guest')->group(function () {
+    Route::get('register', [RegisteredTenantController::class, 'create'])->name('register');
+
+    Route::post('register', [RegisteredTenantController::class, 'store'])->name('register.store');
 });

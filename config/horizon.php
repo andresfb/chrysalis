@@ -197,16 +197,65 @@ return [
 
     'environments' => [
         'production' => [
-            'supervisor-1' => [
-                'maxProcesses' => 10,
-                'balanceMaxShift' => 1,
-                'balanceCooldown' => 3,
+            'central-supervisor' => [
+                'connection' => 'central',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'minProcesses' => 1,
+                'maxProcesses' => 4,
+                'tries' => 1,
+                'timeout' => 300,
             ],
+
+            'tenants-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'processes' => 1,
+                'maxProcesses' => 3,
+                'timeout' => 600,
+                'tries' => 1,
+            ],
+
+            'media-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['media'],
+                'balance' => 'auto',
+                'minProcesses' => 1,
+                'maxProcesses' => 5,
+                'timeout' => 900,
+                'tries' => 1,
+            ],
+
         ],
 
         'local' => [
-            'supervisor-1' => [
-                'maxProcesses' => 3,
+            'central-supervisor' => [
+                'connection' => 'central',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'tries' => 1,
+            ],
+
+            'tenants-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['default'],
+                'balance' => 'auto',
+                'processes' => 1,
+                'maxProcesses' => 2,
+                'tries' => 1,
+            ],
+
+            'media-supervisor' => [
+                'connection' => 'redis',
+                'queue' => ['media'],
+                'balance' => 'auto',
+                'minProcesses' => 1,
+                'maxProcesses' => 2,
+                'timeout' => 300,
+                'tries' => 1,
             ],
         ],
     ],
