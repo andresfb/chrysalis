@@ -1,149 +1,129 @@
-version: '3.5'
-
+version: '3'
 services:
+    laravel.test:
+        build:
+            context: ./vendor/laravel/sail/runtimes/8.1
+            dockerfile: Dockerfile
+            args:
+                WWWGROUP: '${WWWGROUP}'
+        image: sail-8.1/app
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        ports:
+            - '${APP_PORT:-80}:80'
+            - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
+            XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+            XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+            - redis
+            - meilisearch
+            - minio
+    mysql:
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'bug-mysql:/var/lib/mysql'
+            - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+    redis:
+        image: 'redis:alpine'
+        ports:
+            - '${FORWARD_REDIS_PORT:-6379}:6379'
+        volumes:
+            - 'bug-redis:/data'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - redis-cli
+                - ping
+            retries: 3
+            timeout: 5s
+    meilisearch:
+        image: 'getmeili/meilisearch:latest'
+        ports:
+            - '${FORWARD_MEILISEARCH_PORT:-7700}:7700'
+        volumes:
+            - 'bug-meilisearch:/meili_data'
+        networks:
+            - sail
+        healthcheck:
+            test:
+                - CMD
+                - wget
+                - '--no-verbose'
+                - '--spider'
+                - 'http://localhost:7700/health'
+            retries: 3
+            timeout: 5s
+    minio:
+        image: 'minio/minio:latest'
+        ports:
+            - '${FORWARD_MINIO_PORT:-9000}:9000'
+            - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+        environment:
+            MINIO_ROOT_USER: '${DB_USERNAME}'
+            MINIO_ROOT_PASSWORD: '${DB_PASSWORD}'
+        volumes:
+            - 'bug-minio:/data/minio'
+        networks:
+            - sail
+        command: 'minio server /data/minio --console-address ":8900"'
+        healthcheck:
+            test:
+                - CMD
+                - curl
+                - '-f'
+                - 'http://localhost:9000/minio/health/live'
+            retries: 3
+            timeout: 5s
+    phpmyadmin:
+        depends_on:
+            - mysql
+        image: phpmyadmin:latest
+        environment:
+            - PMA_HOST=mysql
+            - PMA_PORT=3306
+        networks:
+            - sail
+        ports:
+            - '8001:80'
 
-  # PHP Service
-  app:
-    build:
-      context: .
-      dockerfile: config/docker/app.dockerfile
-      args:
-        PHP_VERSION: 7.3
-        DOCKER_ENABLE_BASH: 'on'
-        DOCKER_PHP_ENABLE_APCU: 'off'
-        DOCKER_PHP_ENABLE_MYSQL: 'on'
-        DOCKER_PHP_ENABLE_REDIS: 'on'
-        DOCKER_PHP_ENABLE_COMPOSER: 'on'
-        DOCKER_PHP_ENABLE_XDEBUG: 'off'
-        DOCKER_PHP_ENABLE_LDAP: 'off'
-        DOCKER_PHP_ENABLE_MEMCACHED: 'off'
-        DOCKER_PHP_ENABLE_MONGODB: 'off'
-        DOCKER_PHP_ENABLE_POSTGRESQL: 'off'
-        DOCKER_PHP_ENABLE_SYMFONY: 'off'
-        DOCKER_USER_UID: 1000
-        DOCKER_USER_GID: 1000
-    container_name: app
-    restart: unless-stopped
-    tty: true
-    environment:
-      PHP_IDE_CONFIG: "serverName=Test"
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
-    working_dir: /var/www
-    volumes:
-      - ./config/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-      - ./config/php/php-cli.ini:/usr/local/etc/php/conf.d/php-cli.ini
-      - ./src/:/var/www
-    expose:
-      - 9001
-    networks:
-      - app_network
-
-  # Nginx Service
-  webserver:
-    image: nginx:alpine
-    container_name: webserver
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "80:80"
-    volumes:
-      - ./config/nginx/conf.d/:/etc/nginx/conf.d/
-      - ./src/:/var/www
-    networks:
-      - app_network
-
-  # MySQL Service
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
-    restart: unless-stopped
-    tty: true
-    env_file:
-      - .env
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      TZ: ${TIME_ZONE}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    ports:
-      - "${MYSQL_PORT}:3306"
-    volumes:
-      - dbdata:/var/lib/mysql/
-      - ./config/mysql/my.cnf:/etc/mysql/my.cnf
-    networks:
-      - app_network
-
-  # Redis Service
-  redis:
-    image: redis:alpine
-    container_name: redis
-    env_file:
-      - .env
-    ports:
-      - "${REDIS_PORT}:6379"
-    volumes:
-      - redisdata:/data
-    networks:
-      - app_network
-
-  # php-worker to run horizon
-  php-worker:
-    build:
-      context: .
-      dockerfile: config/docker/worker.dockerfile
-      args:
-        PHP_VERSION: 7.3
-        DOCKER_USER_UID: 1000
-        DOCKER_USER_GID: 1000
-        DOCKER_INSTALL_REDIS: 'on'
-        DOCKER_INSTALL_MYSQL_CLIENT: 'on'
-        DOCKER_INSTALL_TAINT: 'on'
-        DOCKER_INSTALL_PGSQL: 'off'
-        DOCKER_INSTALL_BCMATH: 'off'
-        DOCKER_INSTALL_SOAP: 'off'
-        DOCKER_INSTALL_ZIP_ARCHIVE: 'off'
-        DOCKER_INSTALL_GHOSTSCRIPT: 'off'
-        DOCKER_INSTALL_FFMPEG: 'off'
-        DOCKER_INSTALL_GMP: 'off'
-    volumes:
-      - ./src/:/var/www
-      - ./config/php-worker/supervisord.conf:/etc/supervisord.conf
-      - ./config/php-worker/supervisord.d:/etc/supervisord.d
-    depends_on:
-      - redis
-    networks:
-      - app_network
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin
-    volumes:
-      - ./config/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
-      - ./config/phpmyadmin/sessions_ex.ini:/usr/local/etc/php/conf.d/sessions_ex.ini
-    env_file:
-      - .env
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-    restart: always
-    ports:
-      - "8080:80"
-    networks:
-      - app_network
-
-# Docker Networks
 networks:
-  app_network:
-    driver: bridge
-
-# Volumes
+    sail:
+        driver: bridge
 volumes:
-  dbdata:
-    driver: local
-  redisdata:
-    driver: local
+    bug-mysql:
+        driver: local
+    bug-redis:
+        driver: local
+    bug-meilisearch:
+        driver: local
+    bug-minio:
+        driver: local

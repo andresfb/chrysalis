@@ -7,6 +7,8 @@
  * @author   Taylor Otwell <taylor@laravel.com>
  */
 
+date_default_timezone_set('America/New_York');
+
 define('LARAVEL_START', microtime(true));
 
 /*
