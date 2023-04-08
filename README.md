@@ -1,1 +1,2 @@
-# Chrysalis. A bug tracker system
+# Chrysalis
+### A Multi-tenancy Bug Tracker System
