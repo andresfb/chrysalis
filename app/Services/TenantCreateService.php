@@ -7,7 +7,6 @@ use App\Models\Tenant;
 
 class TenantCreateService
 {
-
     public function create(TenantCreateDto $dto): Tenant
     {
         $tenant = Tenant::create($dto->toArray());
