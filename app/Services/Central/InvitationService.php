@@ -32,7 +32,7 @@ class InvitationService
 
     public function sendRequest(InvitationRequestDto $dto): void
     {
-        $invitation = Invitation::updateOrCreate(['email' => $dto->email,], $dto->toArray());
+        $invitation = Invitation::updateOrCreate(['email' => $dto->email], $dto->toArray());
         $dto->id = $invitation->id;
         $invitation->notify($dto);
     }

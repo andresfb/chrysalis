@@ -68,5 +68,4 @@ class RouteServiceProvider extends ServiceProvider
     {
         return config('tenancy.central_domains', []);
     }
-
 }

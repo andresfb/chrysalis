@@ -148,7 +148,7 @@ return [
     'redis' => [
         'prefix_base' => 'tenant', // Each key in Redis will be prepended by this prefix_base, followed by the tenant id.
         'prefixed_connections' => [ // Redis connections whose keys are prefixed, to separate one tenant's keys from another.
-             'default',
+            'default',
         ],
     ],
 
@@ -166,7 +166,7 @@ return [
         // Stancl\Tenancy\Features\UniversalRoutes::class,
         // Stancl\Tenancy\Features\TenantConfig::class, // https://tenancyforlaravel.com/docs/v3/features/tenant-config
         // Stancl\Tenancy\Features\CrossDomainRedirect::class, // https://tenancyforlaravel.com/docs/v3/features/cross-domain-redirect
-         Stancl\Tenancy\Features\ViteBundler::class,
+        Stancl\Tenancy\Features\ViteBundler::class,
     ],
 
     /**

@@ -29,8 +29,6 @@ Route::controller(InvitationReviewController::class)
         Route::delete('/invitation/{invitation}/reject', 'destroy')->name('invitation.destroy');
     });
 
-Route::get('/invitation/review/{invitation}', )->name('invitation.review');
-
 Route::middleware(['throttle:5,1'])
     ->controller(InvitationRequestController::class)
     ->group(function () {

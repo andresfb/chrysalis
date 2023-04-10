@@ -12,9 +12,9 @@ class EnsureEmailIsVerified
 {
     public function handle(Request $request, Closure $next, $redirectToRoute = null)
     {
-        if (! $request->user() ||
+        if (!$request->user() ||
             ($request->user() instanceof MustVerifyEmail &&
-                ! $request->user()->hasVerifiedEmail())) {
+                !$request->user()->hasVerifiedEmail())) {
             return $request->expectsJson()
                 ? abort(403, 'Your email address is not verified.')
                 : Redirect::guest(URL::route($redirectToRoute ?: 'tenant.verification.notice'));

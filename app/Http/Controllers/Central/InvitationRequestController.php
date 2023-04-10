@@ -30,7 +30,7 @@ class InvitationRequestController extends Controller
     {
         if ($this->hasCaptchaFlag()) {
             $validator = Validator::make($request->all(), [
-                'h-captcha-response' => 'required|HCaptcha'
+                'h-captcha-response' => 'required|HCaptcha',
             ]);
 
             if ($validator->fails()) {
@@ -42,6 +42,7 @@ class InvitationRequestController extends Controller
         [$result, $link] = $service->check($dto);
         if (!$result) {
             $this->setCaptchaFlag();
+
             return redirect($link);
         }
 
@@ -74,11 +75,12 @@ class InvitationRequestController extends Controller
         }
 
         $key = $this->getCaptchaKey();
+
         return Cache::has($key);
     }
 
     private function getCaptchaKey(): string
     {
-        return md5('LOGIN:CAPTCHA:' . $this->clientIp->getClientIp());
+        return md5('LOGIN:CAPTCHA:'.$this->clientIp->getClientIp());
     }
 }

@@ -16,8 +16,7 @@ class TenantCreateDto
         public string $name,
         public string $email,
         public string $password,
-    )
-    {
+    ) {
         $this->id = Str::of($domain)->explode('.')->first();
         $this->password = Hash::make($this->password);
     }

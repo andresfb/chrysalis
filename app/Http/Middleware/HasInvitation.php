@@ -17,7 +17,7 @@ class HasInvitation
 
         // validate the request
         $validated = $request->validate([
-            'token' => 'bail|required|string|alpha_num|size:40|exists:invitations,token'
+            'token' => 'bail|required|string|alpha_num|size:40|exists:invitations,token',
         ]);
 
         $invitation = Invitation::whereToken($validated['token'])->first();

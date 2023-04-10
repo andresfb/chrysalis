@@ -7,6 +7,7 @@ use App\Http\Requests\InvitationRequest;
 class InvitationRequestDto
 {
     public int $id = 0;
+
     public float $price = 0;
 
     public function __construct(
@@ -15,8 +16,7 @@ class InvitationRequestDto
         string $price,
         public ?string $request_ip,
         public ?string $agent,
-    )
-    {
+    ) {
         $this->price = (int) (((float) $price) * 100);
     }
 

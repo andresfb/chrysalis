@@ -17,11 +17,13 @@ class TestAppCommand extends Command
             $this->info("Starting test\n");
 
             $this->info("\nDone\n");
+
             return 0;
         } catch (Exception $e) {
             $this->warn("\nError found");
             $this->error($e->getMessage());
             $this->newLine();
+
             return 1;
         }
     }

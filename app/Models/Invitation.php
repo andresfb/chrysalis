@@ -38,7 +38,7 @@ class Invitation extends Model
 
     public function generateToken(): void
     {
-        $this->token = substr(hash('sha256', Str::random(20) . $this->email . time()), 0, 40);
+        $this->token = substr(hash('sha256', Str::random(20).$this->email.time()), 0, 40);
         $this->expires_at = now()->addHours(config('invitation.expires_hours'));
     }
 
