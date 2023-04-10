@@ -29,7 +29,7 @@ Route::controller(InvitationReviewController::class)
         Route::delete('/invitation/{invitation}/reject', 'destroy')->name('invitation.destroy');
     });
 
-Route::middleware(['throttle:5,1'])
+Route::middleware(['throttle:6,1'])
     ->controller(InvitationRequestController::class)
     ->group(function () {
         Route::get('/invitation/request', 'show')->name('invitation.show');
@@ -37,7 +37,7 @@ Route::middleware(['throttle:5,1'])
         Route::post('/invitation/request', 'store')->name('invitation.store');
     });
 
-Route::middleware(['throttle:6,1', 'invitation'])
+Route::middleware(['throttle:12,1', 'invitation'])
     ->controller(RegisteredTenantController::class)
     ->group(function () {
         Route::get('register', 'create')->name('register');

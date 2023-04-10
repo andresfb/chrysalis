@@ -23,7 +23,8 @@ class InvitationRequestController extends Controller
     {
         return view('central.invitation.show')
             ->with('hasCaptcha', $this->hasCaptchaFlag())
-            ->with('message', session('message'));
+            ->with('message', session('message'))
+            ->with('error', session('error'));
     }
 
     public function store(InvitationRequest $request, InvitationService $service)
@@ -34,12 +35,23 @@ class InvitationRequestController extends Controller
             ]);
 
             if ($validator->fails()) {
-                return redirect('post/create')->withErrors($validator);
+                return redirect()
+                    ->route('invitation.show')
+                    ->withErrors($validator);
             }
         }
 
         $dto = InvitationRequestDto::fromRequest($request);
-        [$result, $link] = $service->check($dto);
+
+        [$result, $message] = $service->checkStatus($dto->email);
+        if (!$result) {
+            $this->setCaptchaFlag();
+            session()->flash('error', $message);
+
+            return redirect()->route('invitation.show');
+        }
+
+        [$result, $link] = $service->checkPrice($dto);
         if (!$result) {
             $this->setCaptchaFlag();
 

@@ -5,6 +5,13 @@
             <span class="block sm:inline">{{ $message }}</span>
         </div>
     @else
+
+        @if(!empty($error))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span class="block sm:inline">{{ $error }}</span>
+            </div>
+        @endif
+
         @if ($errors->has('h-captcha-response'))
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                 <span class="block sm:inline">{{ $errors->first('h-captcha-response') }}</span>
@@ -36,7 +43,7 @@
             <div class="mt-4">
                 <x-input-label for="price" :value="__('Price you wiling to pay per month?')" />
                 <div class="flex items-baseline mb-1">
-                    <x-text-input id="price" class="block mt-1 mr-2 w-1/4" type="number" min="1" max="1000" step="0.01" name="price" :value="old('price', 10)" required />
+                    <x-text-input id="price" class="block mt-1 mr-2 w-1/4" type="number" min="1" max="1000" step="0.01" name="price" :value="old('price', 19.99)" required />
                     <span class="text-gray-500">USD</span>
                 </div>
                 <small class="small">Make it just right or...</small>

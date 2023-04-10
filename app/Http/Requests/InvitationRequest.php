@@ -10,7 +10,7 @@ class InvitationRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:254', 'unique:invitations,email'],
+            'email' => ['required', 'email', 'max:254'],
             'price' => ['required', 'numeric'],
         ];
     }

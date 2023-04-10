@@ -4,6 +4,7 @@ namespace App\Services\Central;
 
 use App\DataTransferObjects\InvitationRequestDto;
 use App\DataTransferObjects\ProcessResult;
+use App\Jobs\SendInvitationEmailJob;
 use App\Models\Invitation;
 
 class InvitationService
@@ -15,7 +16,25 @@ class InvitationService
         $this->matrix = config('invitation.ranges');
     }
 
-    public function check(InvitationRequestDto $dto): array
+    public function checkStatus(string $email): array
+    {
+        $invite = Invitation::firstWhere('email', $email);
+        if (blank($invite)) {
+            return [true, ''];
+        }
+
+        if (!blank($invite->registered_at)) {
+            return ['false', "The invitation for $email was already redeemed "];
+        }
+
+        if (!blank($invite->expires_at->isPast())) {
+            return [false, "The invitation for $email has expired "];
+        }
+
+        return [true, ''];
+    }
+
+    public function checkPrice(InvitationRequestDto $dto): array
     {
         $link = '';
         foreach ($this->matrix as $key => $value) {
@@ -37,36 +56,12 @@ class InvitationService
         $invitation->notify($dto);
     }
 
-    public function createToken(InvitationRequestDto $dto): ProcessResult
+    public function createToken(Invitation $invite): array
     {
-        $invite = Invitation::firstWhere('email', $dto->email);
-        if (blank($invite)) {
-            $invite = new Invitation();
-        }
-
-        if (!blank($invite->registered_at)) {
-            return ProcessResult::create()
-                ->setStatus(403)
-                ->setMessage("The invitation for $dto->email was already redeemed ");
-        }
-
-        if (!blank($invite->expires_at->isPast())) {
-            return ProcessResult::create()
-                ->setStatus(405)
-                ->setMessage("The invitation for $dto->email has expired ");
-        }
-
         $invite->generateToken();
         $invite->save();
-        $this->sendInvite($invite);
+        SendInvitationEmailJob::dispatch($invite->id);
 
-        return ProcessResult::create()
-            ->setStatus(200)
-            ->setMessage("Invitation sent to $dto->email");
-    }
-
-    private function sendInvite(Invitation $invite): void
-    {
-
+        return [true, "Invitation sent to $invite->email"];
     }
 }

@@ -4,15 +4,15 @@ return [
 
     'ranges' => [
         'low' => [
-            'prices' => ['min' => 0, 'max' => 1999],
+            'prices' => ['min' => 0, 'max' => 999],
             'link' => env('INVITATION_PRICE_LOW_LINK'),
         ],
         'medium' => [
-            'prices' => ['min' => 2000, 'max' => 3999],
+            'prices' => ['min' => 1000, 'max' => 2999],
             'link' => env('INVITATION_PRICE_MEDIUM_LINK'),
         ],
         'right' => [
-            'prices' => ['min' => 4000, 'max' => 9999],
+            'prices' => ['min' => 3000, 'max' => 9999],
             'link' => '',
         ],
         'high' => [

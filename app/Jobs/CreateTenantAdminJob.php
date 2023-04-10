@@ -23,7 +23,10 @@ class CreateTenantAdminJob implements ShouldQueue
     {
         $this->tenant->run(function (Tenant $tenant) {
 
-            $user = User::create($tenant->only(['name', 'email', 'password']));
+            $userData = $tenant->only(['name', 'email', 'password']);
+            $userData['email_verified_at'] = now();
+
+            $user = User::create($userData);
 
             event(new Registered($user));
 
