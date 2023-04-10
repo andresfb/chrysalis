@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\DataTransferObjects\TenantCreateDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterTenantRequest;
-use App\Services\TenantCreateService;
+use App\Services\Central\TenantCreateService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 

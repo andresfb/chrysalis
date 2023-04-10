@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Central;
 
 use App\DataTransferObjects\TenantCreateDto;
 use App\Models\Tenant;

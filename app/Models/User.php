@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPassword;
 use App\Notifications\VerifyEmail as AppVerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,8 +46,23 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Overridden from the MustVerifyEmail train to call the custom App\Notifications\VerifyEmail
+     * class where we override Illuminate\Auth\Notifications\VerifyEmail::verificationUrl()
+     * to use the tenant.verification.verify route instead of the default verification.verify route.
+     */
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new AppVerifyEmail);
+    }
+
+    /**
+     * Overridden from the CanResetPassword train to call the custom App\Notifications\ResetPassword
+     * class where we override Illuminate\Auth\Notifications\ResetPassword::resetUrl()
+     * to use the tenant.password.reset route instead of the default password.reset route.
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new ResetPassword($token));
     }
 }

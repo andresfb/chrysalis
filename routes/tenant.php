@@ -9,11 +9,11 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Tenant\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-use App\Http\Controllers\Auth\VerifyEmailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,12 +84,14 @@ Route::group([
     Route::middleware(['auth', 'verified'])->group(function () {
         // Home / Dashboard
         Route::get('/', static function () {
-            return view('dashboard');
+            return view('tenant.dashboard');
         })->name('dashboard');
 
         // Profile
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::controller(ProfileController::class)->group(function () {
+            Route::get('/profile', 'edit')->name('profile.edit');
+            Route::patch('/profile', 'update')->name('profile.update');
+            Route::delete('/profile', 'destroy')->name('profile.destroy');
+        });
     });
 });

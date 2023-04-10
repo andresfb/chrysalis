@@ -11,7 +11,9 @@
         "laravel/framework": "^10.0",
         "laravel/horizon": "^5.15",
         "laravel/sanctum": "^3.2",
+        "laravel/slack-notification-channel": "^2.5",
         "laravel/tinker": "^2.8",
+        "scyllaly/hcaptcha": "^4.4",
         "stancl/tenancy": "^3.7"
     },
     "require-dev": {

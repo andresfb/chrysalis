@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredTenantController;
+use App\Http\Controllers\Central\InvitationRequestController;
+use App\Http\Controllers\Central\InvitationReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,11 +17,32 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', static function () {
-    return view('welcome');
+    return view('central.welcome');
 });
 
-Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisteredTenantController::class, 'create'])->name('register');
+Route::controller(InvitationReviewController::class)
+    ->group(function () {
+        Route::get('/invitation/{invitation}/review', 'show')->name('invitation.review');
 
-    Route::post('register', [RegisteredTenantController::class, 'store'])->name('register.store');
-});
+        Route::put('/invitation/{invitation}/approve', 'update')->name('invitation.update');
+
+        Route::delete('/invitation/{invitation}/reject', 'destroy')->name('invitation.destroy');
+    });
+
+Route::get('/invitation/review/{invitation}', )->name('invitation.review');
+
+Route::middleware(['throttle:5,1'])
+    ->controller(InvitationRequestController::class)
+    ->group(function () {
+        Route::get('/invitation/request', 'show')->name('invitation.show');
+
+        Route::post('/invitation/request', 'store')->name('invitation.store');
+    });
+
+Route::middleware(['throttle:6,1', 'invitation'])
+    ->controller(RegisteredTenantController::class)
+    ->group(function () {
+        Route::get('register', 'create')->name('register');
+
+        Route::post('register', 'store')->name('register.store');
+    });

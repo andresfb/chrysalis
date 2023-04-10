@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f19f4862710a732f6a5a1ef54161e314",
+    "content-hash": "7923c3807d70c04dac496ba10628d8e6",
     "packages": [
         {
             "name": "brick/math",
@@ -1498,6 +1498,67 @@
                 "source": "https://github.com/laravel/serializable-closure"
             },
             "time": "2023-01-30T18:31:20+00:00"
+        },
+        {
+            "name": "laravel/slack-notification-channel",
+            "version": "v2.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/slack-notification-channel.git",
+                "reference": "e0d4be5e01d443a69fa89f0a4cac6bd2eda2be8f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/slack-notification-channel/zipball/e0d4be5e01d443a69fa89f0a4cac6bd2eda2be8f",
+                "reference": "e0d4be5e01d443a69fa89f0a4cac6bd2eda2be8f",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0|^7.0",
+                "illuminate/notifications": "~5.8.0|^6.0|^7.0|^8.0|^9.0|^10.0",
+                "php": "^7.1.3|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^7.0|^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Illuminate\\Notifications\\SlackChannelServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Illuminate\\Notifications\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "description": "Slack Notification Channel for laravel.",
+            "keywords": [
+                "laravel",
+                "notifications",
+                "slack"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/slack-notification-channel/issues",
+                "source": "https://github.com/laravel/slack-notification-channel/tree/v2.5.0"
+            },
+            "time": "2023-01-12T16:21:26+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -3135,6 +3196,65 @@
                 }
             ],
             "time": "2023-01-12T18:13:24+00:00"
+        },
+        {
+            "name": "scyllaly/hcaptcha",
+            "version": "4.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Scyllaly/hcaptcha.git",
+                "reference": "3c133dfe684d34570e911de11098ebaa0d2c369d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Scyllaly/hcaptcha/zipball/3c133dfe684d34570e911de11098ebaa0d2c369d",
+                "reference": "3c133dfe684d34570e911de11098ebaa0d2c369d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.*|6.*|7.*|8.*|^9.0|10.*",
+                "php": ">=5.5.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8|^9.5.10|^10.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Scyllaly\\HCaptcha\\HCaptchaServiceProvider"
+                    ],
+                    "aliases": {
+                        "HCaptcha": "Scyllaly\\HCaptcha\\Facades\\HCaptcha"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Scyllaly\\HCaptcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "scyllaly",
+                    "email": "scyllaly@github.com"
+                }
+            ],
+            "description": "hCaptcha for Laravel",
+            "keywords": [
+                "captcha",
+                "hcaptcha",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/Scyllaly/hcaptcha/issues",
+                "source": "https://github.com/Scyllaly/hcaptcha/tree/4.4.5"
+            },
+            "time": "2023-03-14T16:36:21+00:00"
         },
         {
             "name": "stancl/jobpipeline",
